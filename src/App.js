@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Chat from "./Chat";
 import io from 'socket.io-client';
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://chatapp-4-0nz3.onrender.com", {
   transports: ["websocket"],
 });
 
@@ -59,6 +59,10 @@ function App() {
           setUsersCount={setUsersCount}
         />
       )}
+      <footer className="footer">
+        <p></p>
+        <p>&copy; {new Date().getFullYear()} Powered by Wix Wie</p>
+      </footer>
     </div>
   );
 }
