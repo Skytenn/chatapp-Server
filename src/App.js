@@ -61,7 +61,7 @@ function App() {
       )}
       <footer className="footer">
         <p></p>
-        <p>&copy; {new Date().getFullYear()} Powered by Wix Wie</p>
+        <p>&copy; {new Date().getFullYear()} by Tugs.</p>
       </footer>
     </div>
   );
