@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-function Chat({ socket, username, room, setRoom, usersCount, setUsersCount }) {
+function Chat({ socket, username, usersCount, setUsersCount }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
@@ -24,7 +24,6 @@ function Chat({ socket, username, room, setRoom, usersCount, setUsersCount }) {
     if (currentMessage.trim() === "") return;
 
     const messageData = {
-      room: room,
       author: username,
       message: currentMessage,
       time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
@@ -34,19 +33,14 @@ function Chat({ socket, username, room, setRoom, usersCount, setUsersCount }) {
     setCurrentMessage(""); // Input-ыг хоослох
   };
 
-  // Өрөө солих логик
-  const handleChangeRoom = () => {
-    setMessageList([]);
-    socket.emit("leave_room", room);
-    socket.emit("join_room");
-  };
+  
 
   return (
     <div className="chat-window">
       <div className="chat-header">
         <p>
           Чат 💓<span style={{ marginLeft: '10px' }}>{usersCount}</span>
-          <button onClick={handleChangeRoom}>Өрөө Солих</button>
+          
         </p>
       </div>
       <div className="chat-body">

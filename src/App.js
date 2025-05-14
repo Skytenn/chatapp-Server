@@ -10,31 +10,31 @@ const socket = io("https://chatapp-4-0nz3.onrender.com", {
 function App() {
   const [username, setUsername] = useState("");
   const [showChat, setShowChat] = useState(false);
-  const [room, setRoom] = useState("");
+  
   const [usersCount, setUsersCount] = useState(0);
 
   useEffect(() => {
     socket.on("connect", () => console.log("Connected to server!"));
-    socket.on("disconnect", () => console.log("Disconnected from server!"));
-    socket.on("room_joined", (data) => {
-      setRoom(data.room);
-      setUsersCount(data.usersCount);
-      setShowChat(true);
+    socket.on("disconnect", () => {
+      console.log("Disconnected from server!");
+      setUsersCount(0);
     });
-
+    socket.on("room_users", (count) => {
+      setUsersCount(count);
+    });
     return () => {
       socket.off("connect");
       socket.off("disconnect");
-      socket.off("room_joined");
+      socket.off("room_users");
     };
   }, []);
 
-  const joinRoom = () => {
+  const joinChat = () => {
     if (username.trim() === "") {
       alert("Нэрээ оруулна уу!");
       return;
     }
-    socket.emit("join_room");
+    setShowChat(true);
   };
 
   return (
@@ -46,15 +46,14 @@ function App() {
             type="text"
             placeholder="Нэрээ оруулна уу..."
             onChange={(event) => setUsername(event.target.value)}
+            onKeyPress={(event) => event.key === "Enter" && joinChat()}
           />
-          <button onClick={joinRoom}>Чатлах</button>
+          <button onClick={joinChat}>Чатлах</button>
         </div>
       ) : (
         <Chat
           socket={socket}
           username={username}
-          room={room}
-          setRoom={setRoom}
           usersCount={usersCount}
           setUsersCount={setUsersCount}
         />
